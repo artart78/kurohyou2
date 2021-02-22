@@ -71,7 +71,7 @@ def decompress(fn):
             data = fd.read()
         gzipped = False
     textById = {}
-    with open(fn + '.csv', 'r', encoding='utf-8') as csvfile:
+    with open(fn + '.csv', 'r', newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             textById.setdefault(int(row[0], 16), []).append(row[1])

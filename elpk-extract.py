@@ -65,7 +65,7 @@ def decompress(fn):
         for text in parse_kseq(kseq):
             csvData.append(['%08x' % ID, text])
         curOff += 12
-    with open(fn + '.csv', 'w', encoding='utf-8') as csvfile:
+    with open(fn + '.csv', 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for x in csvData:
             writer.writerow(x)
