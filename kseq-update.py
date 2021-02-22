@@ -74,13 +74,11 @@ def decompress(fn):
             try:
                 textById.setdefault(int(row[0], 16), []).append(row[1])
                 curLine += row[1].count('\n')
-                print("Read %s, %s" % (row[0], row[1].replace('\n','[NEWLINE]')))
             except:
                 print("Problem on entry %d or line %d, aborting" % (curEntry, curLine))
                 exit(1)
             curEntry += 1
             curLine += 1
-    print(textById)
     if data[:4] != b'ELPK':
         print("Invalid magic!");
         exit(1)

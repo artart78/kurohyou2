@@ -19,14 +19,20 @@ def update_globals(data, textList):
     textOffPos = {}
     for i in range(numEntries):
         (ID, textOff) = struct.unpack('<II', data[fileOff:fileOff+8])
-        textOffPos.setdefault(textOff, []).append(fileOff+4)
+        textOffPos.setdefault(textOff, []).append((ID, fileOff+4))
         fileOff += 8
     outData = data[:fileOff]
-    for t, off in zip(textList, sorted(textOffPos.keys())):
+    for (checkId, t), off in zip(textList, sorted(textOffPos.keys())):
         newOff = len(outData)
-        for x in textOffPos[off]:
+        found = False
+        for (ID, x) in textOffPos[off]:
             outData = outData[:x] + struct.pack('<I', newOff) + outData[x+4:]
-        outData += t.encode('utf-16le') + b'\x00\x00'
+            if ID == checkId:
+                found = True
+        if not found:
+            print("Found no ID %08x in original file, abort!" % ID)
+            exit(1)
+        outData += t.replace('\r','').encode('utf-16le') + b'\x00\x00'
     outData = outData[:4] + struct.pack('<I', len(outData)) + outData[8:]
     return outData
 
@@ -43,8 +49,17 @@ def decompress(fn):
     textList = []
     with open(fn + '.csv', 'r', newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
+        curLine = 1
+        curEntry = 1
         for row in reader:
-            textList.append(row[0])
+            try:
+                textList.append([int(row[0], 16), row[1]])
+                curLine += row[1].count('\n')
+            except:
+                print("Problem on entry %d or line %d, aborting" % (curEntry, curLine))
+                exit(1)
+            curEntry += 1
+            curLine += 1
     if data[:4] != b'ELPK':
         print("Invalid magic!");
         exit(1)

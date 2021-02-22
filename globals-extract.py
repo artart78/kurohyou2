@@ -16,13 +16,15 @@ def parse_globals(data):
         return []
     fileOff = 20
     textOffSet = set()
+    textId = {}
     for i in range(numEntries):
         (ID, textOff) = struct.unpack('<II', data[fileOff:fileOff+8])
         textOffSet.add(textOff)
+        textId[textOff] = ID
         fileOff += 8
     textList = []
     for x in sorted(textOffSet):
-        textList.append(get_text(data, x))
+        textList.append(['%08x' % textId[x], get_text(data, x)])
     return textList
 
 def decompress(fn):
@@ -47,7 +49,7 @@ def decompress(fn):
         if ID == 0xec992fcf:
             print("extracting globals file")
             for text in parse_globals(subfile):
-                csvData.append([text])
+                csvData.append(text)
         else:
             print("ignoring")
         curOff += 12
