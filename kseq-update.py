@@ -2,11 +2,6 @@
 
 import gzip, struct, binascii, csv, sys
 
-def get_text(data, off):
-    chars = [(x, y) for x, y in zip(data[off::2], data[off+1::2])]
-    size = chars.index((0, 0))
-    return data[off:off+size*2].decode('utf-16le')
-
 def update_kseq(data, textList):
     if data[:4] != b'KSEQ':
         print("Invalid kseq magic!", data[:16])
@@ -52,7 +47,7 @@ def update_kseq(data, textList):
         newOff = len(outData) // 4
         for x in textOffByOff[off]:
             outData = outData[:x] + struct.pack('<H', newOff) + outData[x+2:]
-        outData += t.encode('utf-16le') + b'\x00\x00'
+        outData += t.replace('\r', '').encode('utf-16le') + b'\x00\x00'
         # addresses must be 4-aligned
         if len(outData) % 4 != 0:
             outData += b'\x00\x00'
@@ -73,8 +68,18 @@ def decompress(fn):
     textById = {}
     with open(fn + '.csv', 'r', newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
+        curEntry = 1
+        curLine = 1
         for row in reader:
-            textById.setdefault(int(row[0], 16), []).append(row[1])
+            try:
+                textById.setdefault(int(row[0], 16), []).append(row[1])
+                curLine += row[1].count('\n')
+                print("Read %s, %s" % (row[0], row[1].replace('\n','[NEWLINE]')))
+            except:
+                print("Problem on entry %d or line %d, aborting" % (curEntry, curLine))
+                exit(1)
+            curEntry += 1
+            curLine += 1
     print(textById)
     if data[:4] != b'ELPK':
         print("Invalid magic!");
