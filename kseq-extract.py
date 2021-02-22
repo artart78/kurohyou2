@@ -60,8 +60,8 @@ def decompress(fn):
         (ID, offset, size) = struct.unpack('<III', data[curOff:curOff+12])
         print("* entry %d: ID %08x offset %08x size %08x" % (i, ID, offset, size))
         kseq = data[offset:offset+size]
-        with open('tmp.%08x' % ID, 'wb') as fd:
-            fd.write(kseq) 
+        #with open('tmp.%08x' % ID, 'wb') as fd:
+        #    fd.write(kseq) 
         for text in parse_kseq(kseq):
             csvData.append(['%08x' % ID, text])
         curOff += 12
