@@ -105,5 +105,7 @@ def decompress(fn):
         with open(fn + '.out', 'wb') as outfd:
             outfd.write(outData)
 
-decompress(sys.argv[1])
+
+if __name__ == '__main__':
+    decompress(sys.argv[1])
 
