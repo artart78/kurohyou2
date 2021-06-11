@@ -70,5 +70,6 @@ def decompress(fn):
         for x in csvData:
             writer.writerow(x)
 
-decompress(sys.argv[1])
 
+if __name__ == '__main__':
+    decompress(sys.argv[1])

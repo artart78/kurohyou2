@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['kseq-update.py'],
+a = Analysis(['kseq_update.py'],
              pathex=['/home/artart78/git/kurohyou2'],
              binaries=[],
              datas=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='kseq-update',
+          name='kseq_update',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

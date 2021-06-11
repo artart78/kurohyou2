@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['globals-update.py'],
+a = Analysis(['globals_update.py'],
              pathex=['/home/artart78/git/kurohyou2'],
              binaries=[],
              datas=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='globals-update',
+          name='globals_update',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
