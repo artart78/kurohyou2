@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['globals-extract.py'],
+a = Analysis(['globals_extract.py'],
              pathex=['/home/artart78/git/kurohyou2'],
              binaries=[],
              datas=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='globals-extract',
+          name='globals_extract',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

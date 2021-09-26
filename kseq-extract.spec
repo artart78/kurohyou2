@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['kseq-extract.py'],
+a = Analysis(['kseq_extract.py'],
              pathex=['/home/artart78/git/kurohyou2'],
              binaries=[],
              datas=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='kseq-extract',
+          name='kseq_extract',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
